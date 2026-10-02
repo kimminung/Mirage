@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" font-family="-apple-system, 'SF Pro Text', 'Apple SD Gothic Neo', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#141a33"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9fb3ff"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="620" rx="24" fill="url(#bg)"/>
+  <text x="48" y="56" fill="#ffffff" font-size="28" font-weight="700">Gesture recognition</text>
+  <text x="48" y="84" fill="#9fb3ff" font-size="14">From 21 hand joints to events — features, classifier, hysteresis, dynamic detectors, and default preset bindings.</text>
+
+  <!-- Features -->
+  <g font-size="13" fill="#ffffff">
+    <rect x="48" y="110" width="330" height="190" rx="14" fill="#16213f" stroke="#7c9bff" stroke-opacity="0.5"/>
+    <text x="66" y="136" fill="#7c9bff" font-size="12" font-weight="700" letter-spacing="2">FEATURES (per hand, per frame)</text>
+    <text x="66" y="162">palmSize = |wrist − middleMCP|</text>
+    <text x="66" y="184">extended[f] = |tip−wrist| / |PIP−wrist| &gt; 1.55</text>
+    <text x="66" y="206">thumb: |thumbTip − indexMCP| &gt; 0.9 · palmSize</text>
+    <text x="66" y="228">pinch = 1 − |thumbTip − indexTip| / (0.45 · palmSize)</text>
+    <text x="66" y="250">openness = mean(clamp(ratio − 1))</text>
+    <text x="66" y="272">thumbUp = thumbTip well above thumbMP</text>
+    <text x="66" y="292" fill="#9fb3ff" font-size="12">velocity from palm history (~100 ms)</text>
+  </g>
+  <line x1="378" y1="205" x2="412" y2="205" stroke="#9fb3ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Classifier -->
+  <g font-size="13" fill="#ffffff">
+    <rect x="414" y="110" width="360" height="190" rx="14" fill="#2a1b3f" stroke="#ff00e5" stroke-opacity="0.5"/>
+    <text x="432" y="136" fill="#ff7ff0" font-size="12" font-weight="700" letter-spacing="2">STATIC CLASSIFIER (priority order)</text>
+    <text x="432" y="162">thumb·index touching, pinch &gt; 0.55 → <tspan fill="#ffd84f">pinch</tspan></text>
+    <text x="432" y="184">touching + middle,ring,little extended → <tspan fill="#ffd84f">okSign</tspan></text>
+    <text x="432" y="206">≥4 non-thumb fingers extended → <tspan fill="#ffd84f">openPalm</tspan></text>
+    <text x="432" y="228">none extended → <tspan fill="#ffd84f">fist</tspan> · + thumbUp → <tspan fill="#ffd84f">thumbsUp</tspan></text>
+    <text x="432" y="250">{index} → <tspan fill="#ffd84f">point</tspan> · {index,middle} → <tspan fill="#ffd84f">peace</tspan></text>
+    <text x="432" y="272">{index,little} → <tspan fill="#ffd84f">rockOn</tspan> · else nil</text>
+  </g>
+  <line x1="774" y1="205" x2="808" y2="205" stroke="#9fb3ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Hysteresis state machine -->
+  <g font-size="13" fill="#ffffff">
+    <rect x="810" y="110" width="342" height="190" rx="14" fill="#0f2a2a" stroke="#43ffb0" stroke-opacity="0.5"/>
+    <text x="828" y="136" fill="#43ffb0" font-size="12" font-weight="700" letter-spacing="2">HYSTERESIS</text>
+    <circle cx="880" cy="200" r="30" fill="#1b4f3f" stroke="#43ffb0"/>
+    <text x="880" y="204" text-anchor="middle" font-size="12">idle</text>
+    <circle cx="980" cy="200" r="30" fill="#1b4f3f" stroke="#43ffb0"/>
+    <text x="980" y="196" text-anchor="middle" font-size="11">candidate</text>
+    <text x="980" y="210" text-anchor="middle" font-size="11">n frames</text>
+    <circle cx="1090" cy="200" r="30" fill="#2a6f55" stroke="#43ffb0" stroke-width="2"/>
+    <text x="1090" y="204" text-anchor="middle" font-size="12">active</text>
+    <path d="M910,190 Q945,170 950,190" fill="none" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <path d="M1010,190 Q1050,165 1060,190" fill="none" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="1035" y="162" text-anchor="middle" font-size="10" fill="#c4ffe6">≥3 frames → event</text>
+    <path d="M1080,230 Q985,290 890,230" fill="none" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="985" y="272" text-anchor="middle" font-size="10" fill="#c4ffe6">≠ current for ≥4 frames → release</text>
+  </g>
+
+  <!-- Dynamic -->
+  <g font-size="13" fill="#ffffff">
+    <rect x="48" y="326" width="540" height="130" rx="14" fill="#16213f" stroke="#7c9bff" stroke-opacity="0.5"/>
+    <text x="66" y="352" fill="#7c9bff" font-size="12" font-weight="700" letter-spacing="2">DYNAMIC (palm history, 0.8 s cooldown)</text>
+    <text x="66" y="378"><tspan fill="#ffd84f">swipe ←→↑↓</tspan>: displacement &gt; 22 % of frame within 0.35 s, axis dominance 1.4×</text>
+    <text x="66" y="400"><tspan fill="#ffd84f">wave</tspan>: open hand, ≥3 x-direction reversals within 1.2 s, amplitude &gt; 0.25</text>
+    <text x="66" y="422"><tspan fill="#ffd84f">spread / squeeze</tspan>: two-palm distance changes by &gt; 0.18 in 0.6 s</text>
+    <text x="66" y="444"><tspan fill="#ffd84f">clap</tspan>: palms &lt; 0.09 apart after being &gt; 2.5× farther 0.2 s ago</text>
+  </g>
+
+  <!-- Bindings -->
+  <g font-size="13" fill="#ffffff">
+    <rect x="612" y="326" width="540" height="130" rx="14" fill="#2a1b3f" stroke="#ff00e5" stroke-opacity="0.5"/>
+    <text x="630" y="352" fill="#ff7ff0" font-size="12" font-weight="700" letter-spacing="2">DEFAULT BINDINGS (editable per preset, also by the Director)</text>
+    <text x="630" y="378">peace → burst · fist → attract · openPalm → repel · pinch → paint</text>
+    <text x="630" y="400">swipeLeft → clearCanvas · thumbsUp → nextPalette · swipeRight → cyclePreset</text>
+    <text x="630" y="422">spread → toggleKaleidoscope · (unbound: toggleMesh, freezeFrame, snapshot)</text>
+    <text x="630" y="444" fill="#f0c4ff" font-size="12">GestureEvent { kind, side, position, strength, timestamp } → EffectEngine.handle + AppModel actions</text>
+  </g>
+
+  <!-- Hand landmark legend -->
+  <g font-size="12" fill="#d8e2ff">
+    <rect x="48" y="480" width="1104" height="110" rx="14" fill="#0f2a3a" fill-opacity="0.8"/>
+    <text x="66" y="506" fill="#00f0ff" font-weight="700" letter-spacing="2">VISION HAND LANDMARKS USED</text>
+    <text x="66" y="530">wrist · thumb CMC/MP/IP/Tip · index MCP/PIP/DIP/Tip · middle MCP/PIP/DIP/Tip · ring MCP/PIP/DIP/Tip · little MCP/PIP/DIP/Tip</text>
+    <text x="66" y="552">Coordinates: Vision normalized (bottom-left) → view-normalized (top-left, mirrored when selfie mode is on). Chirality is read from the un-mirrored image, so it matches the real hand.</text>
+    <text x="66" y="574" fill="#9fb3ff">Joints below the confidence floor (default 0.30) are dropped before feature extraction.</text>
+  </g>
+</svg>

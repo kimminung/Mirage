@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" font-family="-apple-system, 'SF Pro Text', 'Apple SD Gothic Neo', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#141a33"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00f0ff"/>
+      <stop offset="1" stop-color="#ff00e5"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9fb3ff"/>
+    </marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="760" rx="24" fill="url(#bg)"/>
+  <text x="48" y="60" fill="#ffffff" font-size="30" font-weight="700">Mirage · Architecture layers</text>
+  <text x="48" y="90" fill="#9fb3ff" font-size="15">macOS 27 · Swift 5 mode · default MainActor isolation · everything on-device</text>
+
+  <!-- Layer 1: Capture -->
+  <g>
+    <rect x="48" y="120" width="1104" height="92" rx="14" fill="#0f2a3a" stroke="#00f0ff" stroke-opacity="0.6"/>
+    <text x="68" y="150" fill="#00f0ff" font-size="13" font-weight="700" letter-spacing="2">1 · CAPTURE</text>
+    <text x="68" y="178" fill="#ffffff" font-size="16" font-weight="600">CameraService (AVFoundation)</text>
+    <text x="68" y="198" fill="#bfe9ff" font-size="13">AVCaptureSession 1280×720 BGRA · 30 fps lock · FaceTime HD / Continuity Camera / external · AsyncStream&lt;CameraFrame&gt; (bufferingNewest 1)</text>
+  </g>
+  <line x1="600" y1="212" x2="600" y2="236" stroke="#9fb3ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 2: Vision -->
+  <g>
+    <rect x="48" y="238" width="1104" height="150" rx="14" fill="#16213f" stroke="#7c9bff" stroke-opacity="0.6"/>
+    <text x="68" y="268" fill="#7c9bff" font-size="13" font-weight="700" letter-spacing="2">2 · PERCEPTION — VisionPipeline (actor, requests run concurrently)</text>
+    <g font-size="12" fill="#e4ecff">
+      <rect x="68" y="286" width="200" height="84" rx="10" fill="#1e2c55"/>
+      <text x="80" y="308" font-weight="700">DetectHumanHandPoseRequest</text>
+      <text x="80" y="328">21 joints × ≤4 hands</text>
+      <text x="80" y="346">chirality left / right</text>
+      <text x="80" y="362" fill="#9fb3ff">every frame · ~15 ms</text>
+
+      <rect x="282" y="286" width="200" height="84" rx="10" fill="#1e2c55"/>
+      <text x="294" y="308" font-weight="700">DetectHumanBodyPoseRequest</text>
+      <text x="294" y="328">19 joints 2D</text>
+      <text x="294" y="346">+ Body3D (17 joints, opt-in)</text>
+      <text x="294" y="362" fill="#9fb3ff">every frame · ~15 ms</text>
+
+      <rect x="496" y="286" width="210" height="84" rx="10" fill="#1e2c55"/>
+      <text x="508" y="308" font-weight="700">GeneratePersonSegmentation</text>
+      <text x="508" y="328">person alpha mask</text>
+      <text x="508" y="346">fast / balanced / accurate</text>
+      <text x="508" y="362" fill="#9fb3ff">alternate frames · ~16 ms</text>
+
+      <rect x="720" y="286" width="200" height="84" rx="10" fill="#1e2c55"/>
+      <text x="732" y="308" font-weight="700">DetectContoursRequest</text>
+      <text x="732" y="328">on the mask → silhouette</text>
+      <text x="732" y="346">polygon approximation</text>
+      <text x="732" y="362" fill="#9fb3ff">alternate frames · ~2 ms</text>
+
+      <rect x="934" y="286" width="200" height="84" rx="10" fill="#1e2c55"/>
+      <text x="946" y="308" font-weight="700">DetectFaceLandmarks</text>
+      <text x="946" y="328">76 points, 10 regions</text>
+      <text x="946" y="346">roll / yaw</text>
+      <text x="946" y="362" fill="#9fb3ff">alternate frames · ~19 ms</text>
+    </g>
+  </g>
+  <line x1="600" y1="388" x2="600" y2="412" stroke="#9fb3ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="612" y="406" fill="#9fb3ff" font-size="12">FrameAnalysis — view-normalized (top-left, mirrored) coordinates</text>
+
+  <!-- Layer 3: Understanding -->
+  <g>
+    <rect x="48" y="414" width="540" height="110" rx="14" fill="#2a1b3f" stroke="#ff00e5" stroke-opacity="0.5"/>
+    <text x="68" y="444" fill="#ff7ff0" font-size="13" font-weight="700" letter-spacing="2">3 · GESTURES — GestureRecognizer</text>
+    <text x="68" y="470" fill="#ffffff" font-size="14">8 static (palm, fist, pinch, point, peace, thumbs-up, rock-on, OK)</text>
+    <text x="68" y="490" fill="#ffffff" font-size="14">5 dynamic (4 swipes, wave) · 3 two-handed (spread, squeeze, clap)</text>
+    <text x="68" y="510" fill="#f0c4ff" font-size="12">finger-extension ratios · pinch distance / palm size · hysteresis 3 in / 4 out · 0.8 s cooldown</text>
+
+    <rect x="612" y="414" width="540" height="110" rx="14" fill="#1b2f3f" stroke="#43ffb0" stroke-opacity="0.5"/>
+    <text x="632" y="444" fill="#43ffb0" font-size="13" font-weight="700" letter-spacing="2">3 · FRAME FX — FrameProcessor (Core Image / Metal)</text>
+    <text x="632" y="470" fill="#ffffff" font-size="14">mirror · CIBumpDistortion per palm (fist = suck in, palm = bulge)</text>
+    <text x="632" y="490" fill="#ffffff" font-size="14">CIKaleidoscope centered between hands · CIMaskToAlpha for the mask</text>
+    <text x="632" y="510" fill="#c4ffe6" font-size="12">CIContext(mtlDevice:) → CGImage once per analyzed frame, off the main actor</text>
+  </g>
+  <line x1="318" y1="524" x2="318" y2="548" stroke="#9fb3ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="882" y1="524" x2="882" y2="548" stroke="#9fb3ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Layer 4: Rendering -->
+  <g>
+    <rect x="48" y="550" width="1104" height="134" rx="14" fill="#0f2a2a" stroke="url(#accent)" stroke-width="1.5"/>
+    <text x="68" y="580" fill="#ffd84f" font-size="13" font-weight="700" letter-spacing="2">4 · RENDER — StageView (SwiftUI)</text>
+    <g font-size="13" fill="#ffffff">
+      <text x="68" y="606" font-weight="600">EffectEngine (60 fps, stepped inside Canvas)</text>
+      <text x="68" y="626" fill="#d8f6ff">particles ≤1800 · ribbons · light-painting strokes · ripples · bursts · attract/repel fields</text>
+      <text x="68" y="648" fill="#d8f6ff">11 layers: trails · sparks · skeleton · lightPainting · forceField · distortion</text>
+      <text x="68" y="668" fill="#d8f6ff">kaleidoscope · constellation · auraOutline · wireframeSkin · faceMesh</text>
+
+      <text x="760" y="606" font-weight="600">MeshRigController (RealityKit)</text>
+      <text x="760" y="626" fill="#d8f6ff">RealityView over the video rect</text>
+      <text x="760" y="648" fill="#d8f6ff">virtual camera 60° FOV · plane z = −2 m · 12 slots</text>
+      <text x="760" y="668" fill="#d8f6ff">USDZ parts named after slots · placeholders</text>
+    </g>
+  </g>
+
+  <!-- Side: Director -->
+  <g>
+    <rect x="48" y="700" width="1104" height="52" rx="14" fill="#1f1f3a" stroke="#9fb3ff" stroke-opacity="0.5"/>
+    <text x="68" y="721" fill="#9fb3ff" font-size="13" font-weight="700" letter-spacing="2">✦ DIRECTOR — FoundationModels (SystemLanguageModel, on-device)</text>
+    <text x="68" y="741" fill="#e4ecff" font-size="12">@Generable EffectPreset guided generation · tool-calling (applyPreset, setLayers, setPalette, bindGesture, setMeshMode, sceneStatus) · 7-second poetic narration</text>
+  </g>
+</svg>

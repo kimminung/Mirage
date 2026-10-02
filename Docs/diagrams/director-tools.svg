@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" font-family="-apple-system, 'SF Pro Text', 'Apple SD Gothic Neo', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#141a33"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9fb3ff"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" rx="24" fill="url(#bg)"/>
+  <text x="48" y="56" fill="#ffffff" font-size="28" font-weight="700">Director — Foundation Models sequence</text>
+  <text x="48" y="84" fill="#9fb3ff" font-size="14">On-device SystemLanguageModel. Three paths: guided preset generation, tool-calling chat, periodic narration. Tools hop to the main actor to mutate AppModel.</text>
+
+  <!-- lifelines -->
+  <g font-size="13" font-weight="700" fill="#ffffff">
+    <rect x="60" y="110" width="170" height="36" rx="10" fill="#2a1b3f" stroke="#ff00e5" stroke-opacity="0.6"/><text x="145" y="134" text-anchor="middle">User / UI</text>
+    <rect x="300" y="110" width="190" height="36" rx="10" fill="#16213f" stroke="#7c9bff" stroke-opacity="0.6"/><text x="395" y="134" text-anchor="middle">EffectDirector</text>
+    <rect x="560" y="110" width="220" height="36" rx="10" fill="#1f1f3a" stroke="#9fb3ff" stroke-opacity="0.6"/><text x="670" y="134" text-anchor="middle">LanguageModelSession</text>
+    <rect x="850" y="110" width="140" height="36" rx="10" fill="#0f2a2a" stroke="#43ffb0" stroke-opacity="0.6"/><text x="920" y="134" text-anchor="middle">Tool (Sendable)</text>
+    <rect x="1030" y="110" width="130" height="36" rx="10" fill="#0f2a3a" stroke="#00f0ff" stroke-opacity="0.6"/><text x="1095" y="134" text-anchor="middle">AppModel</text>
+  </g>
+  <g stroke="#9fb3ff" stroke-opacity="0.35" stroke-dasharray="4 6">
+    <line x1="145" y1="146" x2="145" y2="530"/>
+    <line x1="395" y1="146" x2="395" y2="530"/>
+    <line x1="670" y1="146" x2="670" y2="530"/>
+    <line x1="920" y1="146" x2="920" y2="530"/>
+    <line x1="1095" y1="146" x2="1095" y2="530"/>
+  </g>
+
+  <!-- Path 1 -->
+  <text x="60" y="176" fill="#ffd84f" font-size="12" font-weight="700" letter-spacing="2">1 · GUIDED GENERATION</text>
+  <g font-size="12" fill="#e4ecff">
+    <line x1="145" y1="196" x2="395" y2="196" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/><text x="160" y="190">"밤바다 느낌, 주먹이면 빨려드는…"</text>
+    <line x1="395" y1="220" x2="670" y2="220" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/><text x="410" y="214">respond(to:, generating: EffectPreset.self)</text>
+    <line x1="670" y1="246" x2="395" y2="246" stroke="#43ffb0" stroke-width="1.5" marker-end="url(#arrow)"/><text x="410" y="262" fill="#c4ffe6">EffectPreset { name, mood, layers[], palette[], intensity, persistence, bindings[] } — constrained decoding, always well-formed</text>
+    <line x1="395" y1="282" x2="145" y2="282" stroke="#43ffb0" stroke-width="1.5" marker-end="url(#arrow)"/><text x="160" y="276" fill="#c4ffe6">preset card → 적용 / 저장</text>
+  </g>
+
+  <!-- Path 2 -->
+  <text x="60" y="318" fill="#ffd84f" font-size="12" font-weight="700" letter-spacing="2">2 · TOOL CALLING</text>
+  <g font-size="12" fill="#e4ecff">
+    <line x1="145" y1="338" x2="395" y2="338" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/><text x="160" y="332">"만화경 켜고 팔레트 보라/금색"</text>
+    <line x1="395" y1="360" x2="670" y2="360" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/><text x="410" y="354">respond(to:) with tools: applyPreset · setLayers · setPalette · bindGesture · setMeshMode · sceneStatus</text>
+    <line x1="670" y1="384" x2="920" y2="384" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/><text x="690" y="378">call(arguments: @Generable Arguments)</text>
+    <line x1="920" y1="406" x2="1095" y2="406" stroke="#9fb3ff" stroke-width="1.5" marker-end="url(#arrow)"/><text x="935" y="400">MainActor.run { mutate }</text>
+    <line x1="1095" y1="426" x2="920" y2="426" stroke="#43ffb0" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <line x1="920" y1="446" x2="670" y2="446" stroke="#43ffb0" stroke-width="1.5" marker-end="url(#arrow)"/><text x="690" y="462" fill="#c4ffe6">String output → model composes the reply</text>
+    <line x1="670" y1="482" x2="145" y2="482" stroke="#43ffb0" stroke-width="1.5" marker-end="url(#arrow)"/><text x="160" y="476" fill="#c4ffe6">"만화경을 켜고 팔레트를 바꿨어요." (+ tool log lines in the panel)</text>
+  </g>
+
+  <!-- Path 3 -->
+  <text x="60" y="516" fill="#ffd84f" font-size="12" font-weight="700" letter-spacing="2">3 · NARRATION</text>
+  <text x="300" y="516" fill="#e4ecff" font-size="12">every 7 s: AppModel.sceneSummary() → fresh session (temperature 1.0) → one Korean line → HUD caption. Errors are swallowed; context never accumulates.</text>
+  <text x="300" y="538" fill="#9fb3ff" font-size="12">Context-window overflow in chat → LanguageModelError.contextSizeExceeded → session is recreated transparently.</text>
+</svg>

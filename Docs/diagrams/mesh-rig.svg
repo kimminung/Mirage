@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" font-family="-apple-system, 'SF Pro Text', 'Apple SD Gothic Neo', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#141a33"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9fb3ff"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="640" rx="24" fill="url(#bg)"/>
+  <text x="48" y="56" fill="#ffffff" font-size="28" font-weight="700">Body mesh: wireframe skin &amp; USDZ rig</text>
+  <text x="48" y="84" fill="#9fb3ff" font-size="14">Two independent ways to "wear" a mesh. Both follow Vision's 2D body pose; the rig also accepts Blender-authored parts.</text>
+
+  <!-- Left: wireframe skin -->
+  <g font-size="13" fill="#ffffff">
+    <rect x="48" y="110" width="520" height="250" rx="14" fill="#0f2a3a" stroke="#00f0ff" stroke-opacity="0.5"/>
+    <text x="66" y="136" fill="#00f0ff" font-size="12" font-weight="700" letter-spacing="2">A · WIREFRAME SKIN (SwiftUI Canvas)</text>
+    <text x="66" y="162">1. region = union bbox of silhouette contours (fallback: body joints)</text>
+    <text x="66" y="184">2. grid cols = density (4…40), rows keep cells square on screen</text>
+    <text x="66" y="206">3. vertex displacement: breathing sin(t) + hand push / fist pull</text>
+    <text x="66" y="228">4. triangulated edges as one Path (+ blurred glow + vertex dots)</text>
+    <text x="66" y="250">5. clipToLayer(mask) — the person's alpha mask from segmentation</text>
+    <text x="66" y="272" fill="#bfe9ff" font-size="12">Mask → CIMaskToAlpha → CGImage; drawn into the clip layer so only pixels on the body show.</text>
+    <text x="66" y="300" fill="#bfe9ff" font-size="12">Cost: ~1.2 k line segments at density 14, 60 fps on M4.</text>
+    <!-- mini illustration -->
+    <g transform="translate(400,160)" stroke="#00f0ff" stroke-opacity="0.8" fill="none">
+      <ellipse cx="60" cy="30" rx="22" ry="26"/>
+      <path d="M20,60 Q60,50 100,60 L110,170 L10,170 Z"/>
+      <g stroke-opacity="0.5">
+        <path d="M20,90 L100,90 M15,120 L105,120 M12,150 L108,150 M40,60 L35,170 M60,56 L60,170 M80,60 L85,170"/>
+        <path d="M20,60 L40,90 L60,56 L80,90 L100,60 M20,90 L40,120 L60,90 L80,120 L100,90 M15,120 L40,150 L60,120 L80,150 L105,120"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Right: rig -->
+  <g font-size="13" fill="#ffffff">
+    <rect x="600" y="110" width="552" height="250" rx="14" fill="#2a1b3f" stroke="#ff00e5" stroke-opacity="0.5"/>
+    <text x="618" y="136" fill="#ff7ff0" font-size="12" font-weight="700" letter-spacing="2">B · USDZ RIG (RealityKit RealityView over the video rect)</text>
+    <text x="618" y="162">virtual PerspectiveCamera, vertical FOV 60°, parts on plane z = −2 m</text>
+    <text x="618" y="184">planeH = 2·d·tan(30°) ≈ 2.31 m · planeW = planeH · aspect</text>
+    <text x="618" y="206">x = (nx − 0.5)·planeW · y = (0.5 − ny)·planeH  (nx, ny view-normalized)</text>
+    <text x="618" y="228">bone (A→B): position = mid, rotation = atan2(B−A) − 90°, scale ∝ |B−A|</text>
+    <text x="618" y="250">exponential smoothing k = 0.45 removes Vision jitter</text>
+    <text x="618" y="272" fill="#f0c4ff" font-size="12">Imported part is wrapped and normalized: centered, Y extent = 1 → scaled to bone length × rigScale.</text>
+    <text x="618" y="294" fill="#f0c4ff" font-size="12">No slot names in the file? The whole model is anchored to the torso, scaled ×2.4 of torso length.</text>
+    <text x="618" y="330" fill="#9fb3ff" font-size="12">Placeholders: UnlitMaterial boxes / sphere with 55 % opacity, tinted with the preset's first color.</text>
+  </g>
+
+  <!-- Slots table -->
+  <g font-size="13" fill="#ffffff">
+    <rect x="48" y="386" width="1104" height="230" rx="14" fill="#16213f" stroke="#7c9bff" stroke-opacity="0.5"/>
+    <text x="66" y="412" fill="#7c9bff" font-size="12" font-weight="700" letter-spacing="2">12 SLOTS — name your Blender objects exactly like this (case-insensitive, underscores ignored)</text>
+    <g font-size="13">
+      <text x="66" y="442" fill="#ffd84f">head</text><text x="190" y="442">neck → nose (extended 60 % past the nose)</text>
+      <text x="66" y="466" fill="#ffd84f">torso</text><text x="190" y="466">hipCenter → shoulderCenter</text>
+      <text x="66" y="490" fill="#ffd84f">leftUpperArm</text><text x="190" y="490">leftShoulder → leftElbow</text>
+      <text x="66" y="514" fill="#ffd84f">leftForearm</text><text x="190" y="514">leftElbow → leftWrist</text>
+      <text x="66" y="538" fill="#ffd84f">rightUpperArm</text><text x="190" y="538">rightShoulder → rightElbow</text>
+      <text x="66" y="562" fill="#ffd84f">rightForearm</text><text x="190" y="562">rightElbow → rightWrist</text>
+
+      <text x="620" y="442" fill="#ffd84f">leftThigh</text><text x="760" y="442">leftHip → leftKnee</text>
+      <text x="620" y="466" fill="#ffd84f">leftShin</text><text x="760" y="466">leftKnee → leftAnkle</text>
+      <text x="620" y="490" fill="#ffd84f">rightThigh</text><text x="760" y="490">rightHip → rightKnee</text>
+      <text x="620" y="514" fill="#ffd84f">rightShin</text><text x="760" y="514">rightKnee → rightAnkle</text>
+      <text x="620" y="538" fill="#ffd84f">leftHand</text><text x="760" y="538">hand wrist → middleMCP (×1.9), from hand pose</text>
+      <text x="620" y="562" fill="#ffd84f">rightHand</text><text x="760" y="562">hand wrist → middleMCP (×1.9), from hand pose</text>
+    </g>
+    <text x="66" y="598" fill="#9fb3ff" font-size="12">Author each part centered at its origin with +Y along the bone (start → end). Export: File ▸ Export ▸ Universal Scene Description (.usdz). Joints below confidence 0.45 hide the slot.</text>
+  </g>
+</svg>
