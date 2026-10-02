@@ -216,6 +216,13 @@ final class EffectEngine {
                 let ttl = 4 + persistence * 40
                 strokes.removeAll { now - $0.bornAt > ttl }
             }
+            // Hard caps so a long light-painting session can't grow memory without bound.
+            if strokes.count > 200 { strokes.removeFirst(strokes.count - 200) }
+            var totalPoints = strokes.reduce(0) { $0 + $1.points.count }
+            while totalPoints > 20_000, let first = strokes.first {
+                totalPoints -= first.points.count
+                strokes.removeFirst()
+            }
         }
 
         // 6. Ripples age.

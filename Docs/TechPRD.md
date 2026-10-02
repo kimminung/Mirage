@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | 문서 버전 | 1.0 (2026-10-02) |
-| 대상 플랫폼 | macOS 27+, Apple Silicon (개발·실측: MacBook Air M4, macOS 27.0.1) |
+| 대상 플랫폼 | macOS 27+, Apple Silicon (개발·실측: MacBook Air 15" M3, Mac15,13, 24 GB, macOS 27.0.1) |
 | 상태 | v1 구현 완료, 실기 검증 완료 (스크린샷: `Docs/screenshots`) |
 | 라이선스 | Apache-2.0 |
 
@@ -183,7 +183,7 @@ AVCaptureSession ─▶ AsyncStream<CameraFrame> ─▶ [detached loop]
 
 ---
 
-## 8. 실측 (2026-10-02, MacBook Air M4)
+## 8. 실측 (2026-10-02, MacBook Air 15" M3, 24 GB)
 | 지표 | 값 | 출처 |
 |---|---|---|
 | Vision 합계 | 9–35 ms (워밍업 ~60 ms) | HUD / 설정 탭 단계별 시간 |

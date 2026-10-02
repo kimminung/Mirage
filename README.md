@@ -91,7 +91,7 @@
 
 ---
 
-## 실측 (MacBook Air M4, macOS 27.0.1, FaceTime HD 1280×720)
+## 실측 (MacBook Air 15" M3 · Mac15,13 · 24 GB, macOS 27.0.1, FaceTime HD 1280×720)
 
 | 항목 | 값 |
 |---|---|

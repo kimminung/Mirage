@@ -122,13 +122,18 @@ struct EffectsPanel: View {
                 GroupBox("팔레트") {
                     HStack(spacing: 10) {
                         ForEach(Array(app.preset.palette.indices), id: \.self) { i in
+                            // The binding can be re-evaluated by SwiftUI after the palette shrank
+                            // (preset switch, "−" button, director setPalette), so never index blindly.
                             ColorPicker("", selection: Binding(
                                 get: {
-                                    let c = [app.preset.palette[i]].rgbaColors[0]
+                                    let palette = app.preset.palette
+                                    guard i < palette.count else { return .white }
+                                    let c = [palette[i]].rgbaColors[0]
                                     return Color(red: c.r, green: c.g, blue: c.b)
                                 },
                                 set: { newColor in
                                     var p = app.preset
+                                    guard i < p.palette.count else { return }
                                     p.palette[i] = newColor.hexString
                                     app.preset = p
                                 }
