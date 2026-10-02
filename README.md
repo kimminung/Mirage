@@ -5,7 +5,7 @@
 > 제스처에 반응하는 시각 이펙트를 겹쳐 그리며, 내 몸 위에 와이어프레임 또는 Blender에서 만든 USDZ 메시를 입히는 macOS 앱입니다.
 > Apple **Vision · Core Image · RealityKit · FoundationModels**만 사용하고, 영상은 단 한 프레임도 Mac을 떠나지 않습니다.
 
-![Ember 프리셋 — 손끝 스파크, 주먹으로 끌어당기기, 실루엣 와이어프레임](Docs/screenshots/ember.png)
+![Ember 프리셋 — 양손 주먹으로 입자를 끌어당기는 중. 실루엣 와이어프레임 스킨, 네온 스켈레톤, ‘양손 모으기’ 제스처 라벨](Docs/screenshots/ember.png)
 
 | | |
 |---|---|
@@ -57,7 +57,7 @@
 
 프리셋: **Ember · Neon Wire · Glass Lens · Kaleido · Light Painter · Aurora Skin** (+ 사용자 저장 프리셋).
 
-![Aurora Skin — 얼굴 랜드마크 + 오라 + Foundation Models 내레이션](Docs/screenshots/aurora-face-narration.png)
+![Aurora Skin — 양손 보자기에서 튀는 스파크, 얼굴 76점 랜드마크, 실루엣 오라, 하단의 Foundation Models 한 줄 내레이션](Docs/screenshots/aurora-face-narration.png)
 
 ### 4. 내 몸에 메시 입히기 — 두 가지 방식
 
@@ -86,8 +86,8 @@
 | **디렉터와 대화** | `Tool` 6종: `applyPreset`, `setLayers`, `setPalette`, `bindGesture`, `setMeshMode`, `sceneStatus`. “만화경 켜고 팔레트 보라/금색으로, 지금 뭐 보여?” 한 문장에 도구 세 개가 연달아 호출됩니다 |
 | **장면 내레이션** | 7초마다 Vision 결과 요약을 넣어 한 줄 시를 받아 HUD에 띄웁니다 |
 
-![디렉터 — 자연어 → 타입 안전 프리셋 생성](Docs/screenshots/director-generate.png)
-![디렉터 — 도구 호출 대화 (applyPreset · sceneStatus · setPalette)](Docs/screenshots/director-chat.png)
+![디렉터 — 자연어 한 문장으로 ‘Blue Fists’ 프리셋 생성. 레이어·팔레트·제스처 바인딩이 타입 안전하게 채워진 카드](Docs/screenshots/director-generate.png)
+![디렉터 — 한 문장 지시로 applyPreset → sceneStatus → setPalette 도구가 연달아 호출되고, 만화경 속 양손 위로 금색 팔레트가 적용된 장면](Docs/screenshots/director-chat.png)
 
 ---
 
@@ -95,11 +95,11 @@
 
 | 항목 | 값 |
 |---|---|
-| Vision 합계 (손+몸 매 프레임, 무거운 요청 격프레임) | 9–35 ms (평균 ≈ 19 ms, 첫 1초 워밍업 ≈ 60 ms) |
+| Vision 합계 (손+몸 매 프레임, 무거운 요청 격프레임) | 9–23 ms (첫 1초 워밍업 ≈ 60 ms) |
 | 손 포즈 / 몸 포즈 / 세그멘테이션(균형) / 얼굴 / 윤곽 | ≈ 15 / 15 / 16 / 19 / 2 ms |
-| 분석 프레임률 (사람이 있을 때) | 11–21 fps |
+| 분석 프레임률 (사람·양손·얼굴 포함) | 30 fps (카메라 상한) — 초기 측정은 11–21 fps |
 | 분석 프레임률 (빈 방) | 30 fps (카메라 상한) |
-| 렌더 (SwiftUI Canvas, 입자 ~1,000개) | 56–117 fps |
+| 렌더 (SwiftUI Canvas, 입자 ~1,700개) | 60–101 fps |
 | 프리셋 생성 (Foundation Models) | ≈ 8–12 s |
 | 도구 호출 대화 (3개 도구) | ≈ 12–15 s |
 
